@@ -17,16 +17,20 @@ def get_all_baby(db:Session=Depends(get_db)):
 @router.get('/home/{id}',status_code=status.HTTP_200_OK)
 def get_id(id:int,db:Session=Depends(get_db)):
     val=db.query(Baby).get(id)
+    return val
 
 @router.post("/create",status_code=status.HTTP_200_OK)
 def create_baby(baby:BabyCreate,db:Session=Depends(get_db)):
     val=Baby(
+        client_id=baby.client_id,
         name=baby.name,
         phone_no=baby.phone_no,
-        date_of_birth=baby.date_of_birth
+        date_of_birth=baby.date_of_birth,
+        gender=baby.gender
     )
     db.add(val)
     db.commit()
+    db.refresh(val)
     return val
 
 @router.put("/update/{id}",status_code=status.HTTP_200_OK)
@@ -34,6 +38,7 @@ def update_detail(id:int,baby:BabyUpdate,db:Session=Depends(get_db)):
     val=db.query(Baby).filter(Baby.id==id).first()
     val.phone_no=baby.phone_no
     db.commit()
+    db.refresh(val)
     return val
 
 @router.delete("/delete_user/{id}",status_code=status.HTTP_200_OK)

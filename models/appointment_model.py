@@ -7,9 +7,9 @@ class Appointment(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    client_id = Column(Integer, ForeignKey("client.id"), nullable=False)
-    baby_id = Column(Integer, ForeignKey("baby.id"), nullable=False)
-    doctor_id = Column(Integer, ForeignKey("doctor.id"), nullable=False)
+    client_id = Column(Integer, ForeignKey("client.id"))
+    baby_id = Column(Integer, ForeignKey("baby.id"))
+    doctor_id = Column(Integer, ForeignKey("doctor.id"))
 
     date = Column(Date)
     time = Column(Time)

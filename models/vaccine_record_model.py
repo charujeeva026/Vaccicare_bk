@@ -2,12 +2,12 @@ from db.database import Base
 from sqlalchemy import Column, String, Integer, Date, ForeignKey
 from sqlalchemy.orm import relationship
 
-class Vaccine_records(Base):
+class VaccineRecords(Base):
     __tablename__ = "vaccine_records"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    baby_id = Column(Integer, ForeignKey("baby.id"), nullable=False)
-    vaccine_id = Column(Integer, ForeignKey("vaccine.id"), nullable=False)
+    baby_id = Column(Integer, ForeignKey("baby.id") )
+    vaccine_id = Column(Integer, ForeignKey("vaccine.id"))
 
     date_given = Column(Date)
     next_date = Column(Date)

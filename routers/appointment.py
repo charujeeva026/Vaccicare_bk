@@ -17,15 +17,20 @@ def get_all_appointment(db:Session=Depends(get_db)):
 @router.get('/home/{id}',status_code=status.HTTP_200_OK)
 def get_id(id:int,db:Session=Depends(get_db)):
     val=db.query(Appointment).get(id)
+    return val
 
 @router.post("/create",status_code=status.HTTP_200_OK)
 def create_appointment(booking:AppointmentCreate,db:Session=Depends(get_db)):
     val=Appointment(
+        client_id=booking.client_id,
+        baby_id=booking.baby_id,
+        doctor_id=booking.doctor_id,
         date=booking.date,
         time=booking.time
     )
     db.add(val)
     db.commit()
+    db.refresh(val)
     return val
 
 # @router.put("/update/{id}")

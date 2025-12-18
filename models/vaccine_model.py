@@ -9,7 +9,7 @@ class Vaccine(Base):
     vaccine_name = Column(String)
     age_weeks = Column(Integer)
 
-    records = relationship("VaccineRecord", back_populates="vaccine")
+    records = relationship("VaccineRecords", back_populates="vaccine")
 
 
 

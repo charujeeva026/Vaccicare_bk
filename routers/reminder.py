@@ -17,16 +17,19 @@ def get_all_reminder(db:Session=Depends(get_db)):
 @router.get('/home/{id}',status_code=status.HTTP_200_OK)
 def get_id(id:int,db:Session=Depends(get_db)):
     val=db.query(Reminders).get(id)
+    return val
 
 @router.post("/create",status_code=status.HTTP_200_OK)
 def create_reminder(rem:ReminderCreate,db:Session=Depends(get_db)):
     val=Reminders(
+        baby_id=rem.baby_id,
         date=rem.date,
         day=rem.day,
         vaccine_name=rem.vaccine_name
     )
     db.add(val)
     db.commit()
+    db.refresh(val)
     return val
 
 # @router.put("/update/{id}")

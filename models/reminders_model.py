@@ -6,7 +6,7 @@ class Reminders(Base):
     __tablename__ = "reminders"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    baby_id = Column(Integer, ForeignKey("baby.id"), nullable=False)
+    baby_id = Column(Integer, ForeignKey("baby.id"))
 
     date = Column(Date)
     day = Column(String)

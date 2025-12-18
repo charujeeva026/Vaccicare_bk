@@ -17,6 +17,7 @@ def get_all_hospital(db:Session=Depends(get_db)):
 @router.get('/home/{id}',status_code=status.HTTP_200_OK)
 def get_id(id:int,db:Session=Depends(get_db)):
     val=db.query(Hospital).get(id)
+    return val
 
 @router.post("/create",status_code=status.HTTP_200_OK)
 def create_hospital(hospital:HospitalCreate,db:Session=Depends(get_db)):

@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 
 class BabyCreate(BaseModel):
+    client_id:int
     name:str
-    date_of_birth:int
+    date_of_birth:str
     phone_no:str
     gender:str
 
