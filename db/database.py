@@ -1,9 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker,declarative_base
 
-database_url="postgresql+psycopg2://postgres:AcademyRootPassword@localhost:5432/vaccicare_new"
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-engine=create_engine(database_url)
+engine=create_engine(os.getenv("database_url"))
 
 SessionLocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
