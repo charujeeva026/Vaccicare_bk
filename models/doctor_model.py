@@ -1,5 +1,5 @@
 from db.database import Base
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer, DateTime,ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -17,4 +17,6 @@ class Doctor(Base):
 
     appointments = relationship("Appointment", back_populates="doctor")
 
+    hospital_id = Column(Integer, ForeignKey("hospital.id"))
 
+    hospital = relationship("Hospital", back_populates="doctors")

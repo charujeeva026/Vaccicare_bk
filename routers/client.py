@@ -30,6 +30,7 @@ def create_client(client:ClientCreate,db:Session=Depends(get_db)):
     )
     db.add(val)
     db.commit()
+    db.refresh(val)
     return val
 
 @router.put("/update/{id}",status_code=status.HTTP_200_OK)

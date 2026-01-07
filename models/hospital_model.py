@@ -1,5 +1,6 @@
 from db.database import Base
 from sqlalchemy import Column, String, Integer
+from sqlalchemy.orm import relationship
 
 class Hospital(Base):
     __tablename__ = "hospital"
@@ -9,6 +10,8 @@ class Hospital(Base):
     address = Column(String)
     contact_number = Column(String)
     distance = Column(String)
+
+    doctors = relationship("Doctor", back_populates="hospital")
 
 
 
