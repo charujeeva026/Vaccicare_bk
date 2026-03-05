@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 
 class HospitalCreate(BaseModel):
     hospital_name:str

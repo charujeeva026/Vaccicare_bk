@@ -12,6 +12,7 @@ class Client(Base):
     password = Column(String)
     phone_no = Column(String)
     address = Column(String)
+    location=Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     babies = relationship("Baby", back_populates="client")

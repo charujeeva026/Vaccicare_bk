@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 
 class VaccineCreate(BaseModel):
     vaccine_name:str

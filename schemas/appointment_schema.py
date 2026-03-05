@@ -1,5 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 from datetime import date, time
+
 
 class AppointmentCreate(BaseModel):
     client_id:int
