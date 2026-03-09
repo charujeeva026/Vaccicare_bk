@@ -8,18 +8,10 @@ class Appointment(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     client_id = Column(Integer, ForeignKey("client.id"))
-    baby_id = Column(Integer, ForeignKey("baby.id"))
     doctor_id = Column(Integer, ForeignKey("doctor.id"))
 
-    date = Column(Date)
-    time = Column(Time)
+    appointment_date = Column(Date, nullable=False)
+    appointment_time = Column(Time, nullable=False)
 
     client = relationship("Client", back_populates="appointments")
-    baby = relationship("Baby", back_populates="appointments")
     doctor = relationship("Doctor", back_populates="appointments")
-
-
-
-
-
-

@@ -1,9 +1,18 @@
-from pydantic import BaseModel,EmailStr
+from pydantic import BaseModel
 from datetime import date
 
 class ReminderCreate(BaseModel):
-    baby_id:int
-    date:date
-    day:str
-    vaccine_name:str
+    client_id: int
+    vaccine_name: str
+    date: date
+    day: str
 
+class ReminderSchema(BaseModel):
+    id: int
+    client_id: int
+    vaccine_name: str
+    date: date
+    day: str
+
+    class Config:
+        from_attributes = True

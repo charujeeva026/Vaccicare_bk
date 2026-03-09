@@ -1,13 +1,12 @@
-from pydantic import BaseModel,EmailStr
+from pydantic import BaseModel
 from datetime import date, time
 
-
 class AppointmentCreate(BaseModel):
-    client_id:int
-    baby_id:int
-    doctor_id:int
-    date: date
-    time: time
 
-    
-   
+    client_id: int
+    doctor_id: int
+    appointment_date: date
+    appointment_time: time
+
+    class Config:
+        orm_mode = True

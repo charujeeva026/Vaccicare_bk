@@ -26,6 +26,13 @@ def get_doctor_by_id(id: int, db: Session = Depends(get_db)):
     return doctor
 
 
+
+# GET doctors by hospital
+@router.get("/hospital/{hospital_id}", status_code=status.HTTP_200_OK)
+def get_doctors_by_hospital(hospital_id: int, db: Session = Depends(get_db)):
+    doctors = db.query(Doctor).filter(Doctor.hospital_id == hospital_id).all()
+    return [{"id": doc.id, "doctor_name": doc.name} for doc in doctors]
+
 # ---------------- CREATE DOCTOR ----------------
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 def create_doctor(doctor: DoctorCreate, db: Session = Depends(get_db)):
@@ -76,6 +83,7 @@ def doctor_login(request: DoctorLogin, db: Session = Depends(get_db)):
         "doctor_id": doctor.id,
         "role": "Doctor"
     }
+
 
 # ---------------- UPDATE DOCTOR ----------------
 @router.put("/update/{id}", status_code=status.HTTP_200_OK)

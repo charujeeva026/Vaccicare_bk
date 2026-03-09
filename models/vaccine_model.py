@@ -7,9 +7,6 @@ class Vaccine(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     vaccine_name = Column(String)
-    age_weeks = Column(Integer)
+    age_weeks = Column(String)
 
     records = relationship("VaccineRecords", back_populates="vaccine")
-
-
-
