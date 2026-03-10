@@ -1,2 +1,1 @@
-from main import app
-handler=app
+from main import app as handler
