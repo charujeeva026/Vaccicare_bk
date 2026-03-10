@@ -5,9 +5,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("database_url")
+DATABASE_URL = os.getenv("database_url") or os.getenv("DATABASE_URL")
 
-print("DATABASE_URL:", DATABASE_URL)
+if not DATABASE_URL:
+    print("Warning: DATABASE_URL not found in environment variables.")
+else:
+    print("DATABASE_URL found.")
 
 engine = create_engine(DATABASE_URL)
 
