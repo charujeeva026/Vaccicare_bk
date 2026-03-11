@@ -15,4 +15,5 @@ class VaccineSchema(BaseModel):
     vaccine_name: str
 
     class Config:
-        orm_mode = True
+        # pydantic v2 uses 'from_attributes' instead of 'orm_mode'
+        from_attributes = True

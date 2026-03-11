@@ -21,3 +21,4 @@ pydantic-settings==2.8.1
 uvicorn==0.38.0
 passlib[argon2]
 argon2-cffi>=21.3.0
+apscheduler

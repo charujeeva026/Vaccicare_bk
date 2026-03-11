@@ -9,4 +9,4 @@ class AppointmentCreate(BaseModel):
     appointment_time: time
 
     class Config:
-        orm_mode = True
+        from_attributes = True

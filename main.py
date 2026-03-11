@@ -11,13 +11,13 @@ from routers import (
     reminder,
     health_record,
     appointment,
-    # contact
+    contact
 )
-# from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from sqlalchemy.orm import Session
 from dependencies import get_db
 from models.reminders_model import Reminders
-# from utils_email import send_email
+from utils_email import send_email
 from datetime import datetime, timedelta
 import asyncio
 
@@ -33,9 +33,7 @@ app = FastAPI(
 # ---------------- CORS MIDDLEWARE ----------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://vaccicare-fk.vercel.app"
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -60,54 +58,54 @@ def greet():
 
 
 # ================= EMAIL REMINDER JOB =================
-# def email_reminder_job():
-#     # Get a database session
-#     db: Session = next(get_db())
-#     today = datetime.now().date()
+def email_reminder_job():
+    # Get a database session
+    db: Session = next(get_db())
+    today = datetime.now().date()
 
-#     # Fetch all reminders
-#     reminders = db.query(Reminders).all()
+    # Fetch all reminders
+    reminders = db.query(Reminders).all()
 
-#     for rem in reminders:
-#         baby = rem.baby
-#         client_email = baby.client.email
-#         vaccine_name = rem.vaccine_name
-#         vaccine_date = rem.date
+    for rem in reminders:
+        baby = rem.baby
+        client_email = baby.client.email
+        vaccine_name = rem.vaccine_name
+        vaccine_date = rem.date
 
-#         # 1 week before
-#         if vaccine_date - timedelta(days=7) == today:
-#             subject = "Vaccine Reminder: 1 Week Left"
-#             body = f"""
-#             <p>Hi {baby.name}'s parent,</p>
-#             <p>This is a reminder that <b>{vaccine_name}</b> is scheduled on {vaccine_date} (1 week left).</p>
-#             """
-#             asyncio.run(send_email(subject, [client_email], body))
+        # 1 week before
+        if vaccine_date - timedelta(days=7) == today:
+            subject = "Vaccine Reminder: 1 Week Left"
+            body = f"""
+            <p>Hi {baby.name}'s parent,</p>
+            <p>This is a reminder that <b>{vaccine_name}</b> is scheduled on {vaccine_date} (1 week left).</p>
+            """
+            asyncio.run(send_email(subject, [client_email], body))
 
-#         # 1 day before
-#         if vaccine_date - timedelta(days=1) == today:
-#             subject = "Vaccine Reminder: Tomorrow"
-#             body = f"""
-#             <p>Hi {baby.name}'s parent,</p>
-#             <p>This is a reminder that <b>{vaccine_name}</b> is scheduled tomorrow ({vaccine_date}).</p>
-#             """
-#             asyncio.run(send_email(subject, [client_email], body))
-
-
-# # ---------------- START SCHEDULER ----------------
-# scheduler = BackgroundScheduler()
-# scheduler.add_job(email_reminder_job, "interval", hours=24, next_run_time=datetime.now())
-# scheduler.start()
+        # 1 day before
+        if vaccine_date - timedelta(days=1) == today:
+            subject = "Vaccine Reminder: Tomorrow"
+            body = f"""
+            <p>Hi {baby.name}'s parent,</p>
+            <p>This is a reminder that <b>{vaccine_name}</b> is scheduled tomorrow ({vaccine_date}).</p>
+            """
+            asyncio.run(send_email(subject, [client_email], body))
 
 
-# # ---------------- TEST EMAIL ----------------
-# @app.get("/test-email")
-# async def test_email():
-#     await send_email(
-#         subject="Test Email",
-#         recipients=["receiver@example.com"],
-#         body="<h1>Hello from VacciCare!</h1>"
-#     )
-#     return {"message": "Email sent!"}
+# ---------------- START SCHEDULER ----------------
+scheduler = BackgroundScheduler()
+scheduler.add_job(email_reminder_job, "interval", hours=24, next_run_time=datetime.now())
+scheduler.start()
+
+
+# ---------------- TEST EMAIL ----------------
+@app.get("/test-email")
+async def test_email():
+    await send_email(
+        subject="Test Email",
+        recipients=["receiver@example.com"],
+        body="<h1>Hello from VacciCare!</h1>"
+    )
+    return {"message": "Email sent!"}
 
 
 
