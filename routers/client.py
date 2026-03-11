@@ -60,25 +60,33 @@ def get_client_profile(id: int, db: Session = Depends(get_db)):
 #     return {"message": "Client created successfully", "client_id": new_client.id}
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):
-    print("Raw password length:", len(client.password), repr(client.password))
-    
-    hashed_password = hash_password(client.password)
-    print("Hashed password length:", len(hashed_password))
-    
-    new_client = Client(
-        name=client.name,
-        email=client.email,
-        password=hashed_password,
-        phone_no=client.phone_no,
-        address=client.address,
-        location=client.location,
-    )
-    
-    db.add(new_client)
-    db.commit()
-    db.refresh(new_client)
-    
-    return {"message": "Client created successfully", "client_id": new_client.id}
+    try:
+        existing_client = db.query(Client).filter(Client.email == client.email).first()
+        if existing_client:
+            raise HTTPException(status_code=400, detail="Email already registered")
+
+        hashed_password = hash_password(client.password)
+        print("Hashed password:", hashed_password)  # debug
+
+        new_client = Client(
+            name=client.name,
+            email=client.email,
+            password=hashed_password,
+            phone_no=client.phone_no,
+            address=client.address,
+            location=client.location,
+        )
+
+        db.add(new_client)
+        db.commit()
+        db.refresh(new_client)
+
+        return {"message": "Client created successfully", "client_id": new_client.id}
+
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())  # ✅ Prints full error
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ---------------- LOGIN CLIENT ----------------
