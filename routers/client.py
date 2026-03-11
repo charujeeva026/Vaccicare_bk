@@ -33,31 +33,6 @@ def get_client_profile(id: int, db: Session = Depends(get_db)):
     return client
 
 
-# ---------------- CREATE CLIENT ----------------
-# @router.post("/create", status_code=status.HTTP_201_CREATED)
-# def create_client(client: ClientCreate, db: Session = Depends(get_db)):
-
-#     existing_client = db.query(Client).filter(Client.email == client.email).first()
-
-#     if existing_client:
-#         raise HTTPException(status_code=400, detail="Email already registered")
-
-#     hashed_password = hash_password(client.password)
-
-#     new_client = Client(
-#         name=client.name,
-#         email=client.email,
-#         password=hashed_password,
-#         phone_no=client.phone_no,
-#         address=client.address,
-#         location=client.location,
-#     )
-
-#     db.add(new_client)
-#     db.commit()
-#     db.refresh(new_client)
-
-#     return {"message": "Client created successfully", "client_id": new_client.id}
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     try:
