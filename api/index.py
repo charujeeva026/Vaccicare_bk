@@ -1,5 +1,6 @@
 import os
 import sys
+import traceback
 
 # Add the project root to sys.path
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -8,21 +9,24 @@ if root_dir not in sys.path:
 
 try:
     from main import app
-except Exception as e:
-    import traceback
+
+except Exception as error:
     from fastapi import FastAPI
     from fastapi.responses import JSONResponse
-    
+
+    error_message = str(error)
+    tb = traceback.format_exc()
+
     app = FastAPI()
-    
+
     @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
     async def catch_all(path: str):
         return JSONResponse(
-            status_code=200, # Use 200 so we can actually see the error page
+            status_code=200,
             content={
                 "error": "Startup Crash",
-                "exception": str(e),
-                "traceback": traceback.format_exc(),
+                "exception": error_message,
+                "traceback": tb,
                 "cwd": os.getcwd(),
                 "path": sys.path
             }
