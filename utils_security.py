@@ -4,13 +4,13 @@ import hashlib
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str):
-    # Convert password to SHA256 first (fixed length)
-    sha256_hash = hashlib.sha256(password.encode()).hexdigest()
-    # Truncate to 72 bytes for bcrypt safety
-    sha256_hash = sha256_hash[:72]
-    return pwd_context.hash(sha256_hash)
+    # Encode password as bytes
+    password_bytes = password.encode('utf-8')
+    # Truncate to 72 bytes to avoid bcrypt errors
+    password_bytes = password_bytes[:72]
+    # Hash using bcrypt directly
+    return pwd_context.hash(password_bytes)
 
 def verify_password(plain_password: str, hashed_password: str):
-    sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
-    sha256_hash = sha256_hash[:72]
-    return pwd_context.verify(sha256_hash, hashed_password)
+    password_bytes = plain_password.encode('utf-8')[:72]
+    return pwd_context.verify(password_bytes, hashed_password)
