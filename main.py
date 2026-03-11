@@ -33,7 +33,9 @@ app = FastAPI(
 # ---------------- CORS MIDDLEWARE ----------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # ⚠ For development only
+    allow_origins=[
+        "https://vaccicare-fk.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
