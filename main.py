@@ -22,7 +22,7 @@ from datetime import datetime, timedelta
 import asyncio
 
 # ---------------- CREATE TABLES ----------------
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 # ---------------- APP INSTANCE ----------------
 app = FastAPI(
