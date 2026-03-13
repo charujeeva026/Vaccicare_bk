@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.database import Base, engine
+import models # Ensure all models are registered
 from routers import (
     client,
     doctor,
