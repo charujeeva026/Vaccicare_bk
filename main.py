@@ -12,7 +12,8 @@ from routers import (
     reminder,
     health_record,
     appointment,
-    contact
+    contact,
+    guideline
 )
 from apscheduler.schedulers.background import BackgroundScheduler
 from sqlalchemy.orm import Session
@@ -51,6 +52,7 @@ app.include_router(reminder.router)
 app.include_router(health_record.router)
 app.include_router(appointment.router)
 # app.include_router(contact.router)
+app.include_router(guideline.router)
 
 # ---------------- ROOT ENDPOINT ----------------
 @app.get("/")

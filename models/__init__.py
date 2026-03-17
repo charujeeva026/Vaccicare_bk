@@ -7,3 +7,4 @@ from .health_records_model import HealthRecord
 from .reminders_model import Reminders
 from .vaccine_model import Vaccine
 from .vaccine_record_model import VaccineRecords
+from .guideline_model import Guideline
