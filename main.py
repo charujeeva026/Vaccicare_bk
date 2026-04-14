@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.database import Base, engine
-import models # Ensure all models are registered
+import models
 from routers import (
     client,
     doctor,
@@ -57,7 +57,7 @@ app.include_router(guideline.router)
 # ---------------- ROOT ENDPOINT ----------------
 @app.get("/")
 def greet():
-    return {"message": "Welcome to VacciCare API 🚀"}
+    return {"message": "Welcome to VacciCare API "}
 
 
 # ================= EMAIL REMINDER JOB =================
@@ -70,8 +70,8 @@ def email_reminder_job():
     reminders = db.query(Reminders).all()
 
     for rem in reminders:
-        baby = rem.baby
-        client_email = baby.client.email
+        client=rem.client
+        client_email = client.email
         vaccine_name = rem.vaccine_name
         vaccine_date = rem.date
 
@@ -79,7 +79,7 @@ def email_reminder_job():
         if vaccine_date - timedelta(days=7) == today:
             subject = "Vaccine Reminder: 1 Week Left"
             body = f"""
-            <p>Hi {baby.name}'s parent,</p>
+            <p>Hi {client.name}'s parent,</p>
             <p>This is a reminder that <b>{vaccine_name}</b> is scheduled on {vaccine_date} (1 week left).</p>
             """
             asyncio.run(send_email(subject, [client_email], body))
@@ -88,7 +88,7 @@ def email_reminder_job():
         if vaccine_date - timedelta(days=1) == today:
             subject = "Vaccine Reminder: Tomorrow"
             body = f"""
-            <p>Hi {baby.name}'s parent,</p>
+            <p>Hi {client.name}'s parent,</p>
             <p>This is a reminder that <b>{vaccine_name}</b> is scheduled tomorrow ({vaccine_date}).</p>
             """
             asyncio.run(send_email(subject, [client_email], body))
