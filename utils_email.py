@@ -1,27 +1,31 @@
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from config import settings
 from typing import List
 
-conf = ConnectionConfig(
-    MAIL_USERNAME=settings.MAIL_USERNAME,
-    MAIL_PASSWORD=settings.MAIL_PASSWORD,
-    MAIL_FROM=settings.MAIL_FROM,
-    MAIL_PORT=settings.MAIL_PORT,
-    MAIL_SERVER=settings.MAIL_SERVER,
-    MAIL_STARTTLS=True,
-    MAIL_SSL_TLS=False,
-    USE_CREDENTIALS=True,
-    VALIDATE_CERTS=True
-)
+def send_email(subject: str, recipients: List[str], body: str):
 
-async def send_email(subject: str, recipients: List[str], body: str):
+    msg = MIMEMultipart()
+    msg["From"] = settings.MAIL_FROM
+    msg["To"] = ", ".join(recipients)
+    msg["Subject"] = subject
 
-    message = MessageSchema(
-        subject=subject,
-        recipients=recipients,
-        body=body,
-        subtype="html"
-    )
+    msg.attach(MIMEText(body, "html"))
 
-    fm = FastMail(conf)
-    await fm.send_message(message)
+    try:
+        server = smtplib.SMTP(settings.MAIL_SERVER, settings.MAIL_PORT)
+        server.starttls()
+
+        server.login(
+            settings.MAIL_USERNAME,
+            settings.MAIL_PASSWORD
+        )
+
+        server.send_message(msg)
+        server.quit()
+
+        print("Email sent successfully")
+
+    except Exception as e:
+        print("Email failed:", str(e))
